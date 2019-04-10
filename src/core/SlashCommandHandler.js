@@ -25,7 +25,7 @@ export default class SlashCommandHandler {
         name: 'landing_page_menu',
         text: 'Help',
         type: 'button',
-        url: 'https://github.com/andela-stuff/andela-teams-slack/wiki'
+        url: 'https://github.com/andela/andela-teams-bot/wiki'
       });
       const attachments = [{
         callback_id: 'landing_page_menu',

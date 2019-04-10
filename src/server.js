@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import FeedbackAnalytics from './analytics/FeedbackAnalytics';
 import DataHandler from './core/DataHandler';
 import Eventhandler from './core/EventHandler';
 import InteractionHandler from './core/InteractionHandler';
@@ -23,7 +22,6 @@ app.use(bodyParser.json());
 
 const data = new DataHandler();
 const event = new Eventhandler();
-const feedbackAnalytics = new FeedbackAnalytics();
 const interaction = new InteractionHandler();
 const ptAnalytics = new PivotalTrackerAnalytics();
 const slash = new SlashCommandHandler();
@@ -32,9 +30,6 @@ const utils = new Utility();
 app.get('/', async (req, res) => {
   res.status(200).send("Hello World!<br /><br />Welcome to Andela Teams for Slack.");
 });
-
-app.get('/api/analytics/feedback/:token',
-  feedbackAnalytics.get);
 
 app.get('/api/analytics/pt/:token',
   ptAnalytics.get);
@@ -54,7 +49,6 @@ app.post('/interactions',
   utils.postEmptyMessage,
   utils.getUserObjectFromReqBodyPayloadUserId,
   utils.rejectUsersWithNoEmailOrGithub,
-  interaction.dialogCancellation,
   interaction.dialogSubmission,
   interaction.interactiveMessage,
   interaction.messageAction,
