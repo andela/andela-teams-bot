@@ -109,7 +109,7 @@ export default class Utility {
     next();
   }
   async postWelcomeMessage(req, res, next) {
-    res.status(200).send(':wave: Welcome to Andela Teams :welcome_:');
+    res.status(200).send(':wave: Welcome to Sims Teams :welcome_:');
     next();
   }
   async rejectUsersWithNoEmailOrGithub(req, res, next) {
