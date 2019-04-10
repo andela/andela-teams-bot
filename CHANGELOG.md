@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Visual representation of analytics on feedback.
 
+## [2.0.0] - 2019-04-09
+### Deprecated
+- The ability to give feedback has been moved to another app.
+- The ability to see analytics on feedback has been moved to another app.
+
 ## [1.0.1] - 2019-04-07
 ### Changed
 - `:add_me:` reaction no longer supported.
