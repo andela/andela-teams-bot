@@ -13,7 +13,7 @@ const getAsync = promisify(client.get).bind(client);
 
 const bot = new SlackBot({
   token: process.env.SLACK_BOT_TOKEN, 
-  name: 'Andela Teams'
+  name: 'Sims Teams'
 });
 
 class Chat {
