@@ -28,7 +28,7 @@ const slash = new SlashCommandHandler();
 const utils = new Utility();
 
 app.get('/', async (req, res) => {
-  res.status(200).send("Hello World!<br /><br />Welcome to Andela Teams for Slack.");
+  res.status(200).send("Hello World!<br /><br />Welcome to Andela Teams Bot for Slack.");
 });
 
 app.get('/api/analytics/pt/:token',
