@@ -39,7 +39,7 @@ function _getDates() {
     group.options = dates.map(d => {
       return {
         label: d.format('dddd, MMMM Do YYYY'),
-        value: d.toDate()
+        value: d.format('YYYY-MM-DD')
       }
     });
     option_groups.push(group);

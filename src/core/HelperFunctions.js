@@ -102,16 +102,16 @@ export default class HelperFunctions {
         },
         {
           type: 'select',
-          label: 'Back Date',
+          label: 'From',
           name: 'analytics_start_date',
-          hint: 'This should be in the past of the front date',
+          // hint: 'This should be in the past of the front date',
           data_source: 'external'
         },
         {
           type: 'select',
-          label: 'Front Date',
+          label: 'To',
           name: 'analytics_end_date',
-          hint: 'This should be in the future of the back date',
+          // hint: 'This should be in the future of the back date',
           data_source: 'external'
         },
         {
