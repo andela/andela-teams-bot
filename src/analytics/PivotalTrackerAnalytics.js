@@ -152,9 +152,9 @@ async function _getSkillsVsUsers(items, projectId) {
   labels = labels.filter(l => l.name.toLowerCase().startsWith('skill:'));
   // get all hits
   filteredStories.forEach(s => {
-    s.labels.forEach(l => {
+    s.labels.forEach(l => {console.log('got here>>>>>>>>>>>>>>');console.log(l.name);
       if (l.name.toLowerCase().startsWith('skill:')) {
-        s.owner_ids.forEach(id => {console.log('got here>>>>>>>>>>>>>>');
+        s.owner_ids.forEach(id => {console.log('also got here>>>>>>>>>>>>>>');
           hits.push({
             userId: id,
             name: l.name,
