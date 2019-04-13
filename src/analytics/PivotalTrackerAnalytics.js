@@ -12,9 +12,10 @@ export default class PivotalTrackerAnalytics {
       let token = req.params.token;
       const query = jwt.verify(token, process.env.JWT_SECRET);
       const options = {
-        updated_after: query.startDate,
-        updated_before: query.endDate
+        updated_after: query.startDate + 'T00:00:00Z',
+        updated_before: query.endDate + 'T23:59:59Z'
       };
+      console.log(options)
       const items = await pivotal.project.fetchStories(query.projectId, options);
       let records = [];
       if (query.analyticsType === 'kanban_view') {
