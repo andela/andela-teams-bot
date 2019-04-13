@@ -123,13 +123,13 @@ export default class HelperFunctions {
             label: 'Users and the skills they have touched',
             value: 'users_vs_skills'
           }, {
-            label: 'Skills and the users that touched them',
+            label: 'Skills and the users who touched them',
             value: 'skills_vs_users'
           },{
             label: 'Users and the stories they have touched',
             value: 'users_vs_stories'
           }, {
-            label: 'Stories and the users that touched them',
+            label: 'Stories and the users who touched them',
             value: 'stories_vs_users'
           }, {
             label: 'Kanban view',
