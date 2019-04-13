@@ -6,7 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Visual representation of analytics on feedback.
+- Visual representation of analytics from Pivotal Tracker.
+
+## [2.0.1] - 2019-04-13
+### Changed
+- Only PT story labels starting with `skill:` will now be considered as skills.
+- A skill is now considered done when the containing story is either `accepted` or `delivered`.
 
 ## [2.0.0] - 2019-04-09
 ### Deprecated

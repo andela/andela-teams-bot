@@ -149,16 +149,19 @@ async function _getSkillsVsUsers(items, projectId) {
 
   // get all labels
   let labels = await pivotal.project.getLabels(projectId);
+  labels = labels.filter(l => l.name.toLowerCase().startsWith('skill:'));
   // get all hits
   filteredStories.forEach(s => {
     s.labels.forEach(l => {
-      s.owner_ids.forEach(id => {
-        hits.push({
-          userId: id,
-          name: l.name,
-          state: s.current_state
+      if (l.name.toLowerCase().startsWith('skill:')) {
+        s.owner_ids.forEach(id => {
+          hits.push({
+            userId: id,
+            name: l.name,
+            state: s.current_state
+          });
         });
-      });
+      }
     });
   });
   // create skills and their users
@@ -169,13 +172,17 @@ async function _getSkillsVsUsers(items, projectId) {
     hits.filter(h => h.name === label.name).forEach(h => {
       if (hitsMap.has(h.userId)) {
         let hit = hitsMap.get(h.userId);
-        hit.doneHits = Number(hit.doneHits) + Number(h.state === 'accepted' ? 1 : 0);
-        hit.ongoingHits = Number(hit.ongoingHits) + Number(h.state !== 'accepted' ? 1 : 0);
+        hit.doneHits =
+          Number(hit.doneHits) +
+          Number(h.state === 'accepted' || h.state === 'delivered' ? 1 : 0);
+        hit.ongoingHits =
+          Number(hit.ongoingHits) +
+          Number(h.state !== 'accepted' && h.state !== 'delivered' ? 1 : 0);
         hitsMap.set(h.userId, hit);
       } else {
         hitsMap.set(h.userId, {
-          doneHits: h.state === 'accepted' ? 1 : 0,
-          ongoingHits: h.state !== 'accepted' ? 1 : 0
+          doneHits: h.state === 'accepted' || h.state === 'delivered' ? 1 : 0,
+          ongoingHits: h.state !== 'accepted' && h.state !== 'delivered' ? 1 : 0
         });
       }
     });
@@ -183,7 +190,8 @@ async function _getSkillsVsUsers(items, projectId) {
       let user = await __getUserFromPt(userId);
       label.users.push({ ...user, ...hit });
     }
-    records.push({ name: label.name, users: label.users });
+    // use substring(...) to remove the first 6 characters 'skill:'
+    records.push({ name: label.name.substring(6).trim(), users: label.users });
   }
   return records;
 }
@@ -254,11 +262,13 @@ async function _getUsersVsSkills(items, projectId) {
     filteredStories.filter(s => s.owner_ids.includes(userIds[i]))
       .forEach(s => {
         s.labels.forEach(l => {
-          hits.push({
-            userId: userIds[i],
-            name: l.name,
-            state: s.current_state
-          });
+          if (l.name.toLowerCase().startsWith('skill:')) {
+            hits.push({
+              userId: userIds[i],
+              name: l.name,
+              state: s.current_state
+            });
+          }
         });
       });
   }
@@ -271,19 +281,28 @@ async function _getUsersVsSkills(items, projectId) {
     hits.filter(h => h.userId === id).forEach(h => {
       if (hitsMap.has(h.name)) {
         let hit = hitsMap.get(h.name);
-        hit.doneHits = Number(hit.doneHits) + Number(h.state === 'accepted' ? 1 : 0);
-        hit.ongoingHits = Number(hit.ongoingHits) + Number(h.state !== 'accepted' ? 1 : 0);
+        hit.doneHits =
+          Number(hit.doneHits) +
+          Number(h.state === 'accepted' || h.state === 'delivered' ? 1 : 0);
+        hit.ongoingHits =
+          Number(hit.ongoingHits) +
+          Number(h.state !== 'accepted' && h.state !== 'delivered' ? 1 : 0);
         hitsMap.set(h.name, hit);
       } else {
         hitsMap.set(h.name, {
           name: h.name,
-          doneHits: h.state === 'accepted' ? 1 : 0,
-          ongoingHits: h.state !== 'accepted' ? 1 : 0
+          doneHits: h.state === 'accepted' || h.state === 'delivered' ? 1 : 0,
+          ongoingHits: h.state !== 'accepted' && h.state !== 'delivered' ? 1 : 0
         });
       }
     });
     for (let [name, hit] of hitsMap) {
-      user.skills.push(hit);
+      // use substring(...) to remove the first 6 characters 'skill:'
+      user.skills.push({
+        name: hit.name.substring(6).trim(),
+        doneHits: hit.doneHits,
+        ongoingHits: hit.ongoingHits
+      });
     }
     records.push(user);
   }

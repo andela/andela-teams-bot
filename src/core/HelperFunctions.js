@@ -102,16 +102,16 @@ export default class HelperFunctions {
         },
         {
           type: 'select',
-          label: 'Back Date',
+          label: 'From',
           name: 'analytics_start_date',
-          hint: 'This should be in the past of the front date',
+          // hint: 'This should be in the past of the front date',
           data_source: 'external'
         },
         {
           type: 'select',
-          label: 'Front Date',
+          label: 'To',
           name: 'analytics_end_date',
-          hint: 'This should be in the future of the back date',
+          // hint: 'This should be in the future of the back date',
           data_source: 'external'
         },
         {
@@ -123,13 +123,13 @@ export default class HelperFunctions {
             label: 'Users and the skills they have touched',
             value: 'users_vs_skills'
           }, {
-            label: 'Skills and the users that touched them',
+            label: 'Skills and the users who touched them',
             value: 'skills_vs_users'
           },{
             label: 'Users and the stories they have touched',
             value: 'users_vs_stories'
           }, {
-            label: 'Stories and the users that touched them',
+            label: 'Stories and the users who touched them',
             value: 'stories_vs_users'
           }, {
             label: 'Kanban view',

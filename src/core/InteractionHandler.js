@@ -193,6 +193,14 @@ async function _handleCreatePtProjectDialog(req) {
 async function _handlePtAnalyticsDialog(req) {
   let returnUrl = `https://${req.get('host')}/ui/analytics/pt`;
   let submission = req.payload.submission;
+  // check for date correctness
+  if (submission.analytics_end_date <= submission.analytics_start_date) {
+    await slack.chat.postEphemeralOrDM(
+      'The \'To\' date must be ahead of the \'From\' date',
+      req.payload.channel.id,
+      req.payload.user.id);
+    return;
+  }
   let projectUrl = submission.project_url;
   // // ensure the link was created by this app by checking the database******************************
   // const existingResource = await models.Resource.findOne({
@@ -213,8 +221,8 @@ async function _handlePtAnalyticsDialog(req) {
   let query = {
     projectId,
     analyticsType: submission.analytics_type,
-    endDate: new Date(submission.analytics_end_date),
-    startDate: new Date(submission.analytics_start_date)
+    endDate: new Date(submission.analytics_end_date + 'T23:59:59Z'),
+    startDate: new Date(submission.analytics_start_date + 'T00:00:00Z')
   };
   if (submission.analytics_type === 'kanban_view') {
     returnUrl += '/kanban';
