@@ -149,14 +149,12 @@ async function _getSkillsVsUsers(items, projectId) {
 
   // get all labels
   let labels = await pivotal.project.getLabels(projectId);
-  console.log(labels.length);
   labels = labels.filter(l => l.name.toLowerCase().startsWith('skill:'));
-  console.log(labels.length);
   // get all hits
   filteredStories.forEach(s => {
     s.labels.forEach(l => {
       if (l.name.toLowerCase().startsWith('skill:')) {
-        s.owner_ids.forEach(id => {
+        s.owner_ids.forEach(id => {console.log('got here>>>>>>>>>>>>>>');
           hits.push({
             userId: id,
             name: l.name,
@@ -165,7 +163,7 @@ async function _getSkillsVsUsers(items, projectId) {
         });
       }
     });
-  });
+  });console.log(hits);
   // create skills and their users
   for (let i = 0; i < labels.length; i++) {
     let label = labels[i];
@@ -187,11 +185,12 @@ async function _getSkillsVsUsers(items, projectId) {
           ongoingHits: h.state !== 'accepted' && h.state !== 'delivered' ? 1 : 0
         });
       }
-    });
+    });console.log(hitsMap)
     for (let [userId, hit] of hitsMap) {
       let user = await __getUserFromPt(userId);
       label.users.push({ ...user, ...hit });
     }
+    console.log(label);
     // use substring(...) to remove the first 6 characters 'skill:'
     records.push({ name: label.name.substring(6).trim(), users: label.users });
   }
