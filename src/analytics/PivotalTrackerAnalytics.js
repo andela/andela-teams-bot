@@ -15,7 +15,6 @@ export default class PivotalTrackerAnalytics {
         updated_after: query.startDate,
         updated_before: query.endDate
       };
-      console.log(options)
       const items = await pivotal.project.fetchStories(query.projectId, options);
       let records = [];
       if (query.analyticsType === 'kanban_view') {
@@ -153,9 +152,9 @@ async function _getSkillsVsUsers(items, projectId) {
   labels = labels.filter(l => l.name.toLowerCase().startsWith('skill:'));
   // get all hits
   filteredStories.forEach(s => {
-    s.labels.forEach(l => {console.log('got here>>>>>>>>>>>>>>');console.log(l.name);
+    s.labels.forEach(l => {
       if (l.name.toLowerCase().startsWith('skill:')) {
-        s.owner_ids.forEach(id => {console.log('also got here>>>>>>>>>>>>>>');
+        s.owner_ids.forEach(id => {
           hits.push({
             userId: id,
             name: l.name,
@@ -164,7 +163,7 @@ async function _getSkillsVsUsers(items, projectId) {
         });
       }
     });
-  });console.log(hits);
+  });
   // create skills and their users
   for (let i = 0; i < labels.length; i++) {
     let label = labels[i];
@@ -186,12 +185,11 @@ async function _getSkillsVsUsers(items, projectId) {
           ongoingHits: h.state !== 'accepted' && h.state !== 'delivered' ? 1 : 0
         });
       }
-    });console.log(hitsMap)
+    });
     for (let [userId, hit] of hitsMap) {
       let user = await __getUserFromPt(userId);
       label.users.push({ ...user, ...hit });
     }
-    console.log(label);
     // use substring(...) to remove the first 6 characters 'skill:'
     records.push({ name: label.name.substring(6).trim(), users: label.users });
   }
@@ -264,11 +262,13 @@ async function _getUsersVsSkills(items, projectId) {
     filteredStories.filter(s => s.owner_ids.includes(userIds[i]))
       .forEach(s => {
         s.labels.forEach(l => {
-          hits.push({
-            userId: userIds[i],
-            name: l.name,
-            state: s.current_state
-          });
+          if (l.name.toLowerCase().startsWith('skill:')) {
+            hits.push({
+              userId: userIds[i],
+              name: l.name,
+              state: s.current_state
+            });
+          }
         });
       });
   }
@@ -281,19 +281,28 @@ async function _getUsersVsSkills(items, projectId) {
     hits.filter(h => h.userId === id).forEach(h => {
       if (hitsMap.has(h.name)) {
         let hit = hitsMap.get(h.name);
-        hit.doneHits = Number(hit.doneHits) + Number(h.state === 'accepted' ? 1 : 0);
-        hit.ongoingHits = Number(hit.ongoingHits) + Number(h.state !== 'accepted' ? 1 : 0);
+        hit.doneHits =
+          Number(hit.doneHits) +
+          Number(h.state === 'accepted' || h.state === 'delivered' ? 1 : 0);
+        hit.ongoingHits =
+          Number(hit.ongoingHits) +
+          Number(h.state !== 'accepted' && h.state !== 'delivered' ? 1 : 0);
         hitsMap.set(h.name, hit);
       } else {
         hitsMap.set(h.name, {
           name: h.name,
-          doneHits: h.state === 'accepted' ? 1 : 0,
-          ongoingHits: h.state !== 'accepted' ? 1 : 0
+          doneHits: h.state === 'accepted' || h.state === 'delivered' ? 1 : 0,
+          ongoingHits: h.state !== 'accepted' && h.state !== 'delivered' ? 1 : 0
         });
       }
     });
     for (let [name, hit] of hitsMap) {
-      user.skills.push(hit);
+      // use substring(...) to remove the first 6 characters 'skill:'
+      user.skills.push({
+        name: hit.name.substring(6).trim(),
+        doneHits: hit.doneHits,
+        ongoingHits: hit.ongoingHits
+      });
     }
     records.push(user);
   }
