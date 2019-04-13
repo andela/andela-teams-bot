@@ -221,8 +221,8 @@ async function _handlePtAnalyticsDialog(req) {
   let query = {
     projectId,
     analyticsType: submission.analytics_type,
-    endDate: new Date(submission.analytics_end_date),
-    startDate: new Date(submission.analytics_start_date)
+    endDate: new Date(submission.analytics_end_date + 'T23:59:59Z'),
+    startDate: new Date(submission.analytics_start_date + 'T00:00:00Z')
   };
   if (submission.analytics_type === 'kanban_view') {
     returnUrl += '/kanban';
