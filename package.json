@@ -1,7 +1,7 @@
 {
-  "name": "andela-teams-slack",
+  "name": "andela-teams-bot",
   "version": "1.0.0",
-  "description": "A Slack client for [Andela Teams](https://andela-teams-core.herokuapp.com)",
+  "description": "The codebase for the Sims Teams Slack bot",
   "main": "server.js",
   "engines": {
     "node": "9.7.1",
@@ -28,14 +28,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andela-stuff/andela-teams-slack.git"
+    "url": "git+https://github.com/andela/andela-teams-bot.git"
   },
   "author": "Chieze Franklin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/andela-stuff/andela-teams-slack/issues"
+    "url": "https://github.com/andela/andela-teams-bot/issues"
   },
-  "homepage": "https://github.com/andela-stuff/andela-teams-slack#readme",
+  "homepage": "https://github.com/andela/andela-teams-bot#readme",
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
