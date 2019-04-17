@@ -154,6 +154,10 @@ export default class HelperFunctions {
     return matches.join('').toLowerCase();
   }
 
+  getUrls(word) {
+    return word.match(/<(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})>/gm);
+  }
+
   getTitleCase(sentence) {
     let splitStr = sentence.toLowerCase().split(' ');
     for (let i = 0; i < splitStr.length; i++) {

@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Visual representation of analytics from Pivotal Tracker.
 
+## [2.0.2] - 2019-04-17
+### Changed
+- The action items `Join repo/project` or `Leave repo/project` can now detect URLs in a message that may contain
+content that isn't just URL.
+
 ## [2.0.1] - 2019-04-13
 ### Changed
 - Only PT story labels starting with `skill:` will now be considered as skills.
