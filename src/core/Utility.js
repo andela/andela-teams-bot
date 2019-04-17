@@ -35,6 +35,7 @@ export default class Utility {
         let role = user.is_sims_facilitator ? 'owner' : 'member';
         await pivotal.project.addUser(user.email, projId, { role });
       } else {
+        await slack.chat.postEphemeralOrDM(`Only Github and Pivotal Tracker URLs are supported.`, channelId, userId);
         return;
       }
       await slack.chat.postEphemeralOrDM(`Confirm you have been added to ${url}`, channelId, userId);
@@ -47,6 +48,7 @@ export default class Utility {
         let projId = url.substring(url.lastIndexOf('/') + 1);
         await pivotal.project.removeUser(user.email, projId);
       } else {
+        await slack.chat.postEphemeralOrDM(`Only Github and Pivotal Tracker URLs are supported.`, channelId, userId);
         return;
       }
       await slack.chat.postEphemeralOrDM(`Confirm you have been removed from ${url}`, channelId, userId);
