@@ -76,16 +76,28 @@ export default class InteractionHandler {
       if (payload.type === 'message_action') {
         if (payload.callback_id === 'join_team' || payload.callback_id === 'leave_team') {
           var messageText = payload.message.text;
-          // check if messageText is a link <...>
-          if (messageText.toLowerCase().startsWith('<http') && messageText.endsWith('>')) {
-            // trim messageText of < and > to get link
-            let messageLink = messageText.substring(1, messageText.length - 1).toLowerCase();
-            utils.addOrRemoveUser(
-              messageLink, req.user,
-              payload.user.id,
-              payload.channel.id,
-              payload.callback_id === 'join_team');
+          let urls = helpers.getUrls(messageText);
+          console.log(urls);
+          if (urls) {
+            urls.forEach(url => {
+              console.log(url.substring(1, url.length - 1).toLowerCase());
+              utils.addOrRemoveUser(
+                url.substring(1, url.length - 1).toLowerCase(), // trim url of < and >
+                req.user,
+                payload.user.id,
+                payload.channel.id,
+                payload.callback_id === 'join_team');
+            });
           }
+          // if (messageText.toLowerCase().startsWith('<http') && messageText.endsWith('>')) {
+          //   // trim messageText of < and > to get link
+          //   let messageLink = messageText.substring(1, messageText.length - 1).toLowerCase();
+          //   utils.addOrRemoveUser(
+          //     messageLink, req.user,
+          //     payload.user.id,
+          //     payload.channel.id,
+          //     payload.callback_id === 'join_team');
+          // }
         }
         return;
       }
