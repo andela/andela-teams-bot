@@ -1,6 +1,8 @@
+import HelperFunctions from './HelperFunctions';
 import Slack from '../integrations/Slack';
 import Utility from './Utility';
 
+const helpers = new HelperFunctions();
 const slack = new Slack();
 const utils = new Utility();
 
@@ -11,15 +13,21 @@ export default class EventHandler {
       if (event.reaction === 'add_me') {
         if (event.item.type === 'message') {
           var messageText = await slack.resolver.getMessageFromChannel(event.item.ts, event.item.channel);
-          // check if messageText is a link <...>
-          if (messageText.toLowerCase().startsWith('<http') && messageText.endsWith('>')) {
-            // trim messageText of < and > to get link
-            let messageLink = messageText.substring(1, messageText.length - 1).toLowerCase();
-            utils.addOrRemoveUser(
-              messageLink,
-              req.user, event.user,
-              event.item.channel,
-              event.type === 'reaction_added');
+          let urls = helpers.getUrls(messageText);
+          if (urls) {
+            urls.forEach(url => {
+              utils.addOrRemoveUser(
+                url.substring(1, url.length - 1).toLowerCase(), // trim url of < and >
+                req.user,
+                event.user,
+                event.item.channel,
+                event.type === 'reaction_added');
+            });
+          } else {
+            slack.chat.postEphemeralOrDM(
+              `No URL was detected in the message.`,
+              payload.channel.id,
+              payload.user.id);
           }
         }
       }

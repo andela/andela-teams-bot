@@ -16,7 +16,7 @@ export default class Utility {
     if (!existingResource) {
       // no need to await the promise
       slack.chat.postEphemeralOrDM(
-        `The resource ${url} was not created using Andela Teams.`,
+        `The resource ${url} was not created using Sims Teams.`,
         channelId,
         userId);
       return;
@@ -34,6 +34,9 @@ export default class Utility {
         let projId = url.substring(url.lastIndexOf('/') + 1);
         let role = user.is_sims_facilitator ? 'owner' : 'member';
         await pivotal.project.addUser(user.email, projId, { role });
+      } else {
+        await slack.chat.postEphemeralOrDM(`Only Github and Pivotal Tracker URLs are supported.`, channelId, userId);
+        return;
       }
       await slack.chat.postEphemeralOrDM(`Confirm you have been added to ${url}`, channelId, userId);
       return;
@@ -44,6 +47,9 @@ export default class Utility {
       } else if (url.includes('pivotaltracker.com/')) {
         let projId = url.substring(url.lastIndexOf('/') + 1);
         await pivotal.project.removeUser(user.email, projId);
+      } else {
+        await slack.chat.postEphemeralOrDM(`Only Github and Pivotal Tracker URLs are supported.`, channelId, userId);
+        return;
       }
       await slack.chat.postEphemeralOrDM(`Confirm you have been removed from ${url}`, channelId, userId);
       return;
