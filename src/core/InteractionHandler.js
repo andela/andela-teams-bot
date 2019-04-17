@@ -90,7 +90,7 @@ export default class InteractionHandler {
             });
           } else {
             slack.chat.postEphemeralOrDM(
-              `No URL was detected inn the message.`,
+              `No URL was detected in the message.`,
               payload.channel.id,
               payload.user.id);
           }
