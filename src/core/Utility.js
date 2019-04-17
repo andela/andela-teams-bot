@@ -16,7 +16,7 @@ export default class Utility {
     if (!existingResource) {
       // no need to await the promise
       slack.chat.postEphemeralOrDM(
-        `The resource ${url} was not created using Andela Teams.`,
+        `The resource ${url} was not created using Sims Teams.`,
         channelId,
         userId);
       return;

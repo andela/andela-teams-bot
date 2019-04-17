@@ -88,6 +88,11 @@ export default class InteractionHandler {
                 payload.channel.id,
                 payload.callback_id === 'join_team');
             });
+          } else {
+            slack.chat.postEphemeralOrDM(
+              `No URL was detected inn the message.`,
+              payload.channel.id,
+              payload.user.id);
           }
           // if (messageText.toLowerCase().startsWith('<http') && messageText.endsWith('>')) {
           //   // trim messageText of < and > to get link
