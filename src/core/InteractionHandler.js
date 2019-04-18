@@ -197,7 +197,7 @@ async function _handleCreatePtProjectDialog(req) {
 }
 
 async function _handlePtAnalyticsDialog(req) {
-  let returnUrl = `https://${req.get('host')}/ui/analytics/pt`;
+  let returnUrl = `https://sims-analytics.herokuapp.com`;
   let submission = req.payload.submission;
   // check for date correctness
   if (submission.analytics_end_date <= submission.analytics_start_date) {
@@ -237,9 +237,9 @@ async function _handlePtAnalyticsDialog(req) {
   } else if (submission.analytics_type === 'stories_vs_users') {
     returnUrl += '/stories-vs-users';
   } else if (submission.analytics_type === 'users_collaborations') {
-    returnUrl += '/collaborations';
+    returnUrl += '/collaboration';
   } else if (submission.analytics_type === 'users_vs_skills') {
-    returnUrl += '/users-vs-skills';
+    returnUrl += '/users-skills';
   } else if (submission.analytics_type === 'users_vs_stories') {
     returnUrl += '/users-vs-stories';
   }
