@@ -167,10 +167,28 @@ async function _createAndPostPtProjectLink(req) {
     }]);
 
     if (result.url) {
+      // To understand why we are storing 2 links here
+      // see: https://www.pivotaltracker.com/story/show/166314601
+
+      // store first form of URL
       await models.Resource.create({
         url: result.url.toLowerCase(),
         userId: req.payload.user.id
       });
+      // store second form of URL
+      if (result.url.indexOf('/n/') > -1) {
+        // store the URL without '/n/'
+        await models.Resource.create({
+          url: result.url.replace('pivotaltracker.com/n/', 'pivotaltracker.com/').toLowerCase(),
+          userId: req.payload.user.id
+        });
+      } else {
+        // store the URL with '/n/'
+        await models.Resource.create({
+          url: result.url.replace('pivotaltracker.com/', 'pivotaltracker.com/n/').toLowerCase(),
+          userId: req.payload.user.id
+        });
+      }
     }
 }
 
