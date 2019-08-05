@@ -6,7 +6,7 @@ export default class SlashCommandHandler {
   async teams(req, res, next) {
     try {
       var actions = [];
-      if (req.user && req.user.is_sims_facilitator) {
+      if (req.user && req.user.is_facilitator) {
         actions.push({
           name: 'landing_page_menu',
           text: 'Create Team...',

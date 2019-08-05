@@ -13,7 +13,7 @@ const getAsync = promisify(client.get).bind(client);
 
 const bot = new SlackBot({
   token: process.env.SLACK_BOT_TOKEN, 
-  name: 'Sims Teams'
+  name: 'StackUp Teams'
 });
 
 class Chat {
@@ -223,6 +223,11 @@ class Resolver {
     if (grp) {
       user.is_sims_facilitator = grp.users.includes(userId);
     }
+    grp = groups.find((g) => g.handle == 'bc-leads');
+    if (grp) {
+      user.is_bootcamp_facilitator = grp.users.includes(userId);
+    }
+    user.is_facilitator = user.is_sims_facilitator || user.is_bootcamp_facilitator;
 
     return user;
   }

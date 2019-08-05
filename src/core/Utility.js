@@ -28,11 +28,11 @@ export default class Utility {
     if (addUser) {
       if (url.includes(`github.com/`)) {
         let repo = url.substring(url.lastIndexOf('/') + 1);
-        let permission = user.is_sims_facilitator ? 'admin' : 'push';
+        let permission = user.is_facilitator ? 'admin' : 'push';
         await github.repo.addUser(user.github_user_name, repo, { permission });
       } else if (url.includes('pivotaltracker.com/')) {
         let projId = url.substring(url.lastIndexOf('/') + 1);
-        let role = user.is_sims_facilitator ? 'owner' : 'member';
+        let role = user.is_facilitator ? 'owner' : 'member';
         await pivotal.project.addUser(user.email, projId, { role });
       } else {
         await slack.chat.postEphemeralOrDM(`Only Github and Pivotal Tracker URLs are supported.`, channelId, userId);
