@@ -50,7 +50,7 @@
     "express-handlebars": "^3.0.0",
     "forever": "^0.15.3",
     "jsonwebtoken": "^8.4.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "pg": "^7.8.0",
     "pg-hstore": "^2.3.2",
